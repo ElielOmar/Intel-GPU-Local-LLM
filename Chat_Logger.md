@@ -7,8 +7,5 @@ This is where we use a python script to run ollama, as well as save the transcri
 3. Open VS code. 
 4. Create a folder to store VSCODE files 
 5. Create a file e.g. Chat_logger.py paste the following script
-6. Below
-''' 
 
-
-'''
+   
