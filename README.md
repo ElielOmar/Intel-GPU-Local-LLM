@@ -4,23 +4,61 @@ This repo is a guide + setup resource for anyone who wants to run local large la
 
 Most AI/LLM tutorials are built for NVIDIA CUDA, but Intel GPUs can also accelerate models using oneAPI and SYCL. This repo shows you how to:
 
-Install and configure Intel oneAPI Toolkit on Windows
+1. Install and configure Intel oneAPI Toolkit on Windows
+2. Set up Ollama to run LLMs locally on Intel Arc / Core Ultra
+3. Configure Anaconda/Miniconda for Python + AI libraries
+4. Verify that your Intel GPU is actually being used (not just CPU)
 
-Set up Ollama to run LLMs locally on Intel Arc / Core Ultra
-
-Configure Anaconda/Miniconda for Python + AI libraries
-
-Verify that your Intel GPU is actually being used (not just CPU)
-
-🔧 Requirements
+##  Requirements
 
 Windows 11 (recommended)
 
 Intel Arc GPU or Core Ultra CPU with integrated GPU
 
-Intel oneAPI Base Toolkit
+[Ollama (Windows build)](https://ollama.com/)
 
-Ollama (Windows build)
 
-Conda / Python 3.10+
+### [Intel oneAPI Base Toolkit](https://www.intel.com/content/www/us/en/developer/tools/oneapi/base-toolkit-download.html)
+Ollama (and most LLM runtimes) need hardware acceleration to run models efficiently.
+
+NVIDIA GPUs use CUDA (via NVIDIA drivers), but Intel doesn’t have CUDA. Instead, they use oneAPI and SYCL for compute acceleration.
+
+The Intel oneAPI Toolkit provides the libraries and drivers that let apps like Ollama or PyTorch actually use your Intel Arc GPU + CPU extensions (like AVX512, AMX).
+Without it, your LLM would just run on CPU which is super slow.
+
+### Conda / Python 3.10+ (Optional but recommended) 
+Ollama itself doesn’t require Conda.
+
+But Conda is your safety net for when you start mixing Ollama + Python + Hugging Face + Intel oneAPI toolkits.
+
+So unless you plan on doing more than just ollama you don't really need it. 
+
+### [IPEX-LLM](https://github.com/intel/ipex-llm/releases) 
+This is where the magic happens. 
+Ensures that your setup isn’t just “running on CPU” but actually taking advantage of the Arc GPU + oneAPI stack.
+
+Most LLM runtimes are optimized for NVIDIA CUDA, leaving Intel users with poor performance or CPU-only execution.
+With IPEX-LLM, you get:
+
+1. Hardware Acceleration for Intel GPUs
+2. Lets your Arc GPU handle LLM inference, not just the CPU.
+3. Drastically improves speed compared to CPU-only runs.
+4. Lower Memory Usage with Quantization
+5. You can load bigger models (like 13B or even 70B with quantization) on limited VRAM.
+
+Example: Run llama-2-13b-int4 on an Intel Arc GPU that couldn’t handle the full-precision model.
+
+#### Drop-In Hugging Face Support
+
+If you already use Transformers, you can switch to Intel acceleration with minimal code changes.
+
+from ipex_llm.transformers import AutoModelForCausalLM
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf", load_in_4bit=True)
+
+
+#### Bridges the Gap with Ollama
+
+While Ollama gives you a great runtime experience, IPEX-LLM is what enables Intel GPUs to be useful when you go deeper into Python-based workflows (fine-tuning, research, Hugging Face integration).
+
+
 
