@@ -1,0 +1,5 @@
+# Chat Logger For Local LLM 
+If you are using a GUI for ollama this does not apply since the GUI automatically saves chats. 
+By default ollama does not save your chat logs if you decide to run directly on your terminal.
+This is where we use a python script to run ollama, as well as save the transcript for your chat directly to your file system. 
+
