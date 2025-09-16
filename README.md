@@ -26,13 +26,13 @@ NVIDIA GPUs use CUDA (via NVIDIA drivers), but Intel doesn’t have CUDA. Instea
 The Intel oneAPI Toolkit provides the libraries and drivers that let apps like Ollama or PyTorch actually use your Intel Arc GPU + CPU extensions (like AVX512, AMX).
 Without it, your LLM would just run on CPU which is super slow.
 
-### Conda / Python 3.10+ (Optional but recommended) 
-Ollama itself doesn’t require Conda.
+### [Visual Studio Build Tools](https://visualstudio.microsoft.com/insiders/) 
+If you want a smooth Local LLM experience, build tools are vital. 
 
-But Conda is your safety net for when you start mixing Ollama + Python + Hugging Face + Intel oneAPI toolkits.
+   With Build Tools: Everything just works. You can install, run, and even customize LLM software.
 
-So unless you plan on doing more than just ollama you don't really need it. 
-
+   Without Build Tools: You try to install a package but it fails with errors like “Microsoft Visual C++ 14.0 or greater is required”. (Now you go and install build tools)
+   
 ### [IPEX-LLM](https://github.com/intel/ipex-llm/releases) 
 This is where the magic happens. 
 Ensures that your setup isn’t just “running on CPU” but actually taking advantage of the Arc GPU + oneAPI stack.
@@ -48,17 +48,15 @@ With IPEX-LLM, you get:
 
 Example: Run llama-2-13b-int4 on an Intel Arc GPU that couldn’t handle the full-precision model.
 
-#### Drop-In Hugging Face Support
-
-If you already use Transformers, you can switch to Intel acceleration with minimal code changes.
-
-from ipex_llm.transformers import AutoModelForCausalLM
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf", load_in_4bit=True)
-
-
 #### Bridges the Gap with Ollama
 
 While Ollama gives you a great runtime experience, IPEX-LLM is what enables Intel GPUs to be useful when you go deeper into Python-based workflows (fine-tuning, research, Hugging Face integration).
 
+### Conda / Python 3.10+ (Optional but recommended) 
+Ollama itself doesn’t require Conda.
+
+But Conda is your safety net for when you start mixing Ollama + Python + Hugging Face + Intel oneAPI toolkits.
+
+So unless you plan on doing more than just ollama you don't really need it. 
 
 
