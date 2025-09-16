@@ -67,8 +67,8 @@ if __name__ == "__main__":
 4. Once ollama is running do the following for easier access 
 5. Go to power shell and input _'notepad $PROFILE'_
 6. Paste the following to create a function (REPLACE PATH)
-   ```powershell
+```powershell
    function chat_logger {
    python "C:\Users\eliel\Downloads\Visual_S\FILENAMEHERE"
    }
-   ```
+```
